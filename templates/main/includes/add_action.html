@@ -1,0 +1,76 @@
+{%load staticfiles%}
+{% load crispy_forms_tags %}
+<head>
+	<link rel="stylesheet" href="{%static 'css/checkbox.css'%}">
+</head>
+{%include 'main/includes/error.html' %}
+<div class="modal fade bd-example-modal-lg" id="addAction" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h2 class="text-center">Create Task</h2>
+			</div>
+			<div class="modal-body">
+					<div class="container">
+						<div class="row">
+							<div class="col">
+								<form action="{%url 'task_add_url'%}" method="post" id="submit_form">
+									{%csrf_token%}
+										<div class="form-row">
+											<div class="col">
+												{{forms.name|as_crispy_field}}
+											</div>
+											<div class="col">
+												<div class="center">
+														<div class="form-group">
+															{%if action.time_trigger%}
+																<input type="checkbox" name="time_trigger" value="False"
+										 						style="display: none;" class="checkboxinput form-check-input form-control" id="id_time_trigger">
+
+															{%else%}
+																<label for="id_time_trigger">Scheduled this action</label>
+																<input type="checkbox" name="time_trigger"
+												 				class="checkboxinput form-check-input form-control" id="id_time_trigger">
+															{%endif%}
+														</div>
+												</div>
+											</div>
+										</div>
+										<div class="form-row currently">
+											<div class="col">
+												{{forms.time_spent_hour|as_crispy_field}}
+											</div>
+											<div class="col">
+												{{forms.time_spent_minute|as_crispy_field}}
+											</div>
+										</div>
+										<div class="form-row">
+											<div class="col">
+												{{forms.time_scheduled_hour|as_crispy_field}}
+											</div>
+											<div class="col">
+												{{forms.time_scheduled_minute|as_crispy_field}}
+										</div>
+										</div>
+										<div class="form-row">
+											<div class="col">
+												{{forms.description|as_crispy_field}}
+											</div>
+											<div class="col">
+												{{forms.category|as_crispy_field}}
+											</div>
+										</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<button type="submit" class="btn btn-success">Create</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<script src="{%static 'js/add_action.js'%}"></script>
+
