@@ -21,18 +21,18 @@
 						<td>{%if it.time_trigger%}
 								Scheduled
 							{%else%}
-								{{it.time_spent_hour}}:
-								{%if it.time_spent_minute != 0%}
-									{{it.time_spent_minute}}
+								{{it.spent_hours}}:
+								{%if it.spent_minutes != 0%}
+									{{it.spent_minutes}}
 								{%else%}
 									0
 								{%endif%}
 							{%endif%}
 						</td>
-						<td>{%if it.time_scheduled_hour or it.time_scheduled_minute%}
-							{{it.time_scheduled_hour}}:
-								{%if it.time_scheduled_minute != 0%}
-									{{it.time_scheduled_minute}}
+						<td>{%if it.scheduled_hours or it.scheduled_minutes%}
+							{{it.scheduled_hours}}:
+								{%if it.scheduled_minutes != 0%}
+									{{it.scheduled_minutes}}
 								{%else%}
 									0
 								{%endif%}

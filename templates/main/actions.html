@@ -37,19 +37,19 @@
 											{%if action.time_trigger%}
 												Scheduled
 											{%else%}
-												{{action.time_spent_hour}}:
-												{%if action.time_spent_minute != 0%}
-													{{action.time_spent_minute}}
+												{{action.spent_hours}}:
+												{%if action.spent_minutes != 0%}
+													{{action.spent_minutes}}
 												{%else%}
 													0 
 												{%endif%}
 											{%endif%}	
 										</td>
 										<td>
-											{%if action.time_scheduled_minute or action.time_scheduled_hour%}
-												{{action.time_scheduled_hour}}:
-												{%if action.time_scheduled_minute != 0%}
-													{{action.time_scheduled_minute}}
+											{%if action.scheduled_minutes or action.scheduled_hours%}
+												{{action.scheduled_hours}}:
+												{%if action.scheduled_minutes != 0%}
+													{{action.scheduled_minutes}}
 												{%else%}
 													0
 												{%endif%}

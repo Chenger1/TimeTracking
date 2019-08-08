@@ -18,8 +18,8 @@ document.body.addEventListener('click', (event) => {
 function hide_time_in_change_form(event){
     let form = forms[event.target.name]
     let trigger = form.elements.id_time_trigger
-    let time_area1 = form.elements.time_spent_hour
-    let time_area2 = form.elements.time_spent_minute
+    let time_area1 = form.elements.spent_hours
+    let time_area2 = form.elements.spent_minutes
     localStorage['time_area1'] = time_area1.value
     localStorage['time_area2'] = time_area2.value
     let close_button = form.elements.namedItem('close_button')

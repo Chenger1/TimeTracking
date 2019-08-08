@@ -14,10 +14,10 @@ class TaskAddMixin:
             time_trigger = form.cleaned_data['time_trigger']
             name = form.cleaned_data['name']
             times = [
-                form.cleaned_data['time_scheduled_hour'],
-                form.cleaned_data['time_scheduled_minute'],
-                form.cleaned_data['time_spent_hour'],
-                form.cleaned_data['time_spent_minute'],
+                form.cleaned_data['scheduled_hours'],
+                form.cleaned_data['scheduled_minutes'],
+                form.cleaned_data['spent_hours'],
+                form.cleaned_data['spent_minutes'],
             ]
             self.time_processing(times, time_trigger)
             description = form.cleaned_data['description']
@@ -25,10 +25,10 @@ class TaskAddMixin:
             new_action = self.model.objects.create(
                 user=request.user,
                 name=name,
-                time_spent_hour=times[2],
-                time_spent_minute=times[3],
-                time_scheduled_hour=times[0],
-                time_scheduled_minute=times[1],
+                spent_hours=times[2],
+                spent_minutes=times[3],
+                scheduled_hours=times[0],
+                scheduled_minutes=times[1],
                 time_trigger=time_trigger,
                 description=description,
             )
@@ -70,17 +70,18 @@ class TaskUpdateMixin:
         if form.is_valid():
             time_trigger = form.cleaned_data['time_trigger']
             times = [
-                form.cleaned_data['time_scheduled_hour'],
-                form.cleaned_data['time_scheduled_minute'],
-                form.cleaned_data['time_spent_hour'],
-                form.cleaned_data['time_spent_minute'],
+                form.cleaned_data['scheduled_hours'],
+                form.cleaned_data['scheduled_minutes'],
+                form.cleaned_data['spent_hours'],
+                form.cleaned_data['spent_minutes'],
             ]
             TaskAddMixin.time_processing(times, time_trigger)
+            print(times)
             new_obj = form.save()
-            new_obj.time_spent_hour = times[2]
-            new_obj.time_spent_minute = times[3]
-            new_obj.time_scheduled_hour = times[0]
-            new_obj.time_scheduled_minute = times[1]
+            new_obj.spent_hours = times[2]
+            new_obj.spent_minutes = times[3]
+            new_obj.scheduled_hours = times[0]
+            new_obj.scheduled_minutes = times[1]
             new_obj.save()
             return redirect(reverse('task_list_url'))
         print(form.errors)
@@ -115,13 +116,58 @@ class CategoryAddMixin:
     def post(self, request):
         form = self.form(request.user, request.POST)
         if form.is_valid():
-            name = form.cleaned_data['name'] #FIXME Form should return cleaned data itself
+            name = form.cleaned_data['name']
             self.model.objects.create(
                 user=request.user,
                 name=name
             )
             return redirect(reverse('task_list_url'))
         return render(request, self.template, context={'forms': form})
+
+
+class TaskDeleteMixin:
+    model = None
+    url = None
+
+    def get(self, request, slug):
+        obj = self.model.objects.get(slug__iexact=slug)
+        obj.delete()
+        return redirect(reverse(self.url))
+
+
+class TaskHiddenMixin:
+    model = None
+    url = None
+
+    def get(self, request, slug):
+        obj = self.model.objects.get(slug__iexact=slug)
+        obj.is_available = False
+        obj.save()
+        return redirect(reverse(self.url))
+
+
+class TaskRestoreMixin:
+    model = None
+    url = None
+
+    def get(self, request, slug):
+        obj = self.model.objects.get(slug__iexact=slug)
+        obj.is_available = True
+        obj.save()
+        return redirect(reverse(self.url))
+
+
+class CategoryDeleteMixin:
+    model = None
+    url = None
+
+    def get(self,request, slug):
+        obj = self.model.objects.get(slug__iexact=slug)
+        obj.delete()
+        return redirect(reverse(self.url))
+
+
+
 
 
 

@@ -10,33 +10,40 @@ from .forms import CategoryForm
 from .utils import TaskAddMixin
 from .utils import CategoryAddMixin
 from .utils import TaskUpdateMixin
+from .utils import TaskDeleteMixin
+from .utils import TaskHiddenMixin
+from .utils import TaskRestoreMixin
+from .utils import CategoryDeleteMixin
 # Create your views here.
 
 
 class TaskListView(View):
+
     def get(self, request):
-        try:
+       try:
             model = Task.objects.filter(user=request.user).order_by('-id')
             action_model = [item for item in model if item.is_available]
             category_model = Category.objects.filter(user=request.user)
             category_form = CategoryForm(request.user)
             task_form = TaskForm(request.user)
             context = { 'actions': action_model,
-                        'categories': category_model,
-                        'category_form': category_form,
-                        'task_form': task_form}
+                            'categories': category_model,
+                            'category_form': category_form,
+                            'task_form': task_form}
             return render(request, 'main/actions.html', context)
-        except:
+       except:
             return render(request, 'main/first_look.html', context={'trigger': True})
 
 
 class CategoryView(View):
+
     def get(self, request, slug):
         model = Category.objects.filter(slug__iexact=slug)
         return render(request, 'main/category_view.html', context={'model': model})
 
 
 class HistoryView(View):
+
     def get(self, request):
         action_model = Task.objects.filter(user=request.user).order_by('-id')
         return render(request, 'main/history.html', context={'actions': action_model})
@@ -59,37 +66,21 @@ class TaskUpdateView(TaskUpdateMixin, View):
     form = TaskForm
 
 
-class DeleteAndRestore(View):#FIXME No logic in view
-    # @staticmethod
-    # def delete(request, slug):
-    #     if 'category-' in slug:
-    #         model = Category
-    #     else:
-    #         model = Task
-    #     super(DeleteAndRestore,DeleteAndRestore).delete(DeleteAndRestoreMixin,request,slug)
+class TaskDelete(TaskDeleteMixin, View):
+    model = Task
+    url = 'history_url'
 
-    @staticmethod
-    def delete(request, slug): #FIXME Try to user decorator
-        if 'category-' in slug:
-            model = Category
-            url = 'task_list_url'
-        else:
-            model = Task
-            url = 'history_url'
-        obj = model.objects.get(slug__iexact=slug)
-        obj.delete()
-        return redirect(reverse(url))
 
-    @staticmethod
-    def hidden(request, slug):
-        obj = Task.objects.get(slug__iexact=slug)
-        obj.is_available = False
-        obj.save()
-        return redirect(reverse('task_list_url'))
+class TaskHidden(TaskHiddenMixin, View):
+    model = Task
+    url = 'task_list_url'
 
-    @staticmethod
-    def restore(request, slug):
-        obj = Task.objects.get(slug__iexact=slug)
-        obj.is_available = True
-        obj.save()
-        return redirect(reverse('task_list_url'))
+
+class TaskRestore(TaskRestoreMixin, View):
+    model = Task
+    url = 'task_list_url'
+
+
+class CategoryDelete(CategoryDeleteMixin, View):
+    model = Category
+    url = 'task_list_url'

@@ -16,10 +16,10 @@ class TaskForm(forms.ModelForm):
         model = Task
         fields = [
             'name',
-            'time_spent_hour',
-            'time_spent_minute',
-            'time_scheduled_hour',
-            'time_scheduled_minute',
+            'spent_hours',
+            'spent_minutes',
+            'scheduled_hours',
+            'scheduled_minutes',
             'description',
             'category',
             'time_trigger'
@@ -31,18 +31,18 @@ class TaskForm(forms.ModelForm):
             'name': forms.TextInput(attrs={'id': 'name_input'}),
             'slug': forms.TextInput(attrs={}),
             'time_trigger': forms.CheckboxInput(attrs={'type': 'checkbox'}),
-            'time_spent_hour': forms.NumberInput(attrs={'class': 'time_check currently'}),
-            'time_spent_minute': forms.NumberInput(attrs={'class': 'time_check currently'}),
-            'time_scheduled_hour': forms.NumberInput(attrs={'class': 'time_check'}),
-            'time_scheduled_minute': forms.NumberInput(attrs={'class': 'time_check'}),
+            'spent_hours': forms.NumberInput(attrs={'class': 'time_check currently'}),
+            'spent_minutes': forms.NumberInput(attrs={'class': 'time_check currently'}),
+            'scheduled_hours': forms.NumberInput(attrs={'class': 'time_check'}),
+            'scheduled_minutes': forms.NumberInput(attrs={'class': 'time_check'}),
             'description': forms.Textarea(attrs={'style': 'height:150px;'}),
         }
 
     def clean(self):
-        time_spent_hour = self.cleaned_data['time_spent_hour']
-        time_spent_minute = self.cleaned_data['time_spent_minute']
-        time_scheduled_hour = self.cleaned_data['time_scheduled_hour']
-        time_scheduled_minute = self.cleaned_data['time_scheduled_minute']
+        spent_hours = self.cleaned_data['spent_hours']
+        spent_minutes = self.cleaned_data['spent_minutes']
+        scheduled_hours = self.cleaned_data['scheduled_hours']
+        scheduled_minutes = self.cleaned_data['scheduled_minutes']
         time_trigger = self.cleaned_data['time_trigger']
 
 

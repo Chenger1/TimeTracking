@@ -23,27 +23,27 @@
 	      		{%if action.time_trigger%}
 					<div class="col">
 						<h5 class="time_text">Should be:
-							{{action.time_scheduled_hour}}:
-						{%if action.time_scheduled_minute != 0%}
-							{{action.time_scheduled_minute}}
+							{{action.scheduled_hours}}: hour(s)
+						{%if action.scheduled_minutes != 0%}
+							{{action.scheduled_minutes}} minute(s)
 						{%endif%}
 						</h5>
 					</div>
 				{%else%}
 					<div class="col">
 	      				<h5 class="time_text">Time Usage: <br>
-	      					{{action.time_spent_hour}} hour(s)
-						{%if action.time_spent_minute != 0%}
-							:{{action.time_spent_minute}} minute(s)
+	      					{{action.spent_hours}} hour(s)
+						{%if action.spent_minutes != 0%}
+							:{{action.spent_minutes}} minute(s)
 						{%endif%}
 					</h5>
 	      		</div>
 	      		<div class="col">
-	      				{%if action.time_scheduled_minute or action.time_scheduled_hour%}
+	      				{%if action.scheduled_minutes or action.scheduled_hours%}
 	      				<h5 class="time_text">Should be:<br>
-	      					{{action.time_scheduled_hour}} hour(s)
-	      					{%if action.time_scheduled_minute != 0%}
-	      						:{{action.time_scheduled_minute}} minute(s)
+	      					{{action.scheduled_hours}} hour(s)
+	      					{%if action.scheduled_minutes != 0%}
+	      						:{{action.scheduled_minutes}} minute(s)
 	      				{%else%}
 	      					0
 	      					{%endif%}

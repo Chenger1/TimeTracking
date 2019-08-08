@@ -18,10 +18,10 @@ class Task(models.Model):
                              on_delete=models.CASCADE)
     name = models.CharField(max_length=150)
     slug = models.SlugField(max_length=15, unique=True)
-    time_spent_hour = models.IntegerField(blank=True)
-    time_spent_minute = models.IntegerField(blank=True)
-    time_scheduled_hour = models.IntegerField(blank=True)
-    time_scheduled_minute = models.IntegerField(blank=True)
+    spent_hours = models.IntegerField(blank=True)
+    spent_minutes = models.IntegerField(blank=True)
+    scheduled_hours = models.IntegerField(blank=True)
+    scheduled_minutes = models.IntegerField(blank=True)
     data = models.DateTimeField(auto_now_add=True)
     description = models.TextField(max_length=250, blank=True)
     category = models.ManyToManyField('Category',
@@ -33,7 +33,7 @@ class Task(models.Model):
         return reverse('task_hidden_url', kwargs={'slug': self.slug})
 
     def get_delete_url(self):
-        return reverse('delete_url', kwargs={'slug': self.slug})
+        return reverse('task_delete_url', kwargs={'slug': self.slug})
 
     def get_restore_url(self):
         return reverse('task_restore_url', kwargs={'slug': self.slug})
@@ -62,7 +62,7 @@ class Category(models.Model):
         return reverse('category_view_url', kwargs={'slug':self.slug})
 
     def get_delete_url(self):
-        return reverse('delete_url', kwargs={'slug':self.slug})
+        return reverse('category_delete_url', kwargs={'slug':self.slug})
 
     def save(self, *args, **kwargs):
         self.slug = gen_slug('category-' + self.name)
