@@ -17,7 +17,7 @@ class Task(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              on_delete=models.CASCADE)
     name = models.CharField(max_length=150)
-    slug = models.SlugField(max_length=15, unique=True)
+    slug = models.SlugField(max_length=200, unique=True)
     spent_hours = models.IntegerField(blank=True)
     spent_minutes = models.IntegerField(blank=True)
     scheduled_hours = models.IntegerField(blank=True)
